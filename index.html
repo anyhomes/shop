@@ -32,8 +32,7 @@
           <p class="eyebrow">Everyday goods, edited with care</p>
           <h1>安妮選物</h1>
           <p>
-            為日常生活挑選耐看、耐用、好整理的物件。從通勤、居家到工作桌面，
-            用更少的物品整理出更舒服的節奏。
+            精選來自日本的母嬰與生活好物，陪伴每個珍貴又溫暖的成長時刻。
           </p>
           <div class="hero-actions">
             <a class="primary-link" href="#products">查看商品</a>
@@ -59,7 +58,7 @@
         <div>
           <div class="section-heading">
             <p class="eyebrow">Curated products</p>
-            <h2>好物精選</h2>
+            <h2>本週精選</h2>
           </div>
           <div class="product-grid" data-product-grid></div>
         </div>
@@ -190,7 +189,8 @@ a {
   display: flex;
   gap: clamp(14px, 3vw, 30px);
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 1.125rem;
+  margin-left: auto;
 }
 
 .nav-links a:hover {
@@ -236,10 +236,9 @@ a {
   display: flex;
   align-items: end;
   padding: clamp(42px, 7vw, 86px) clamp(18px, 4vw, 56px);
-  background:
-    linear-gradient(90deg, rgba(12, 20, 18, 0.76), rgba(12, 20, 18, 0.34), rgba(12, 20, 18, 0.06)),
-    url("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=82")
-      center 38% / cover;
+ background-image: url("images/babybg.png");
+  background-size: cover;
+  background-position: center;
   color: #fff;
 }
 
@@ -257,20 +256,23 @@ a {
 }
 
 .hero .eyebrow {
-  color: #f4cf8a;
+  color: #b9855b;
 }
 
 h1,
 h2,
 p {
   margin-top: 0;
+  color: #b9855b;
 }
+
 
 h1 {
   margin-bottom: 18px;
   font-size: clamp(3.6rem, 9vw, 7.8rem);
   line-height: 0.94;
   letter-spacing: 0;
+  color: #9d6e49;
 }
 
 h2 {
@@ -278,11 +280,12 @@ h2 {
   font-size: clamp(1.55rem, 3vw, 2.4rem);
   line-height: 1.1;
   letter-spacing: 0;
+  color: #b9855b;ｓ
 }
 
 .hero-copy p:not(.eyebrow) {
   max-width: 620px;
-  color: rgba(255, 255, 255, 0.88);
+  color: #8c6f58;
   font-size: clamp(1rem, 2vw, 1.18rem);
 }
 
@@ -308,13 +311,13 @@ h2 {
 }
 
 .primary-link {
-  background: #fff;
-  color: var(--ink);
+  background: #c89b6d;
+  color: #ffffff;
 }
 
 .secondary-link {
   border-color: rgba(255, 255, 255, 0.54);
-  color: #fff;
+  color: #b38808;
 }
 
 .toolbar {
