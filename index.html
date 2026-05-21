@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>安妮選物 | 電商網站</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+   
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="安妮選物首頁">
+        <span class="brand-mark">N</span>
+        <span>安妮選物</span>
+      </a>
+      <nav class="nav-links" aria-label="主要導覽">
+        <a href="#products">商品</a>
+        <a href="#story">選品理念</a>
+        <a href="#checkout">結帳</a>
+      </nav>
+      <button class="icon-button cart-toggle" type="button" aria-label="開啟購物車">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-count" data-cart-count>0</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Everyday goods, edited with care</p>
+          <h1>安妮選物</h1>
+          <p>
+            為日常生活挑選耐看、耐用、好整理的物件。從通勤、居家到工作桌面，
+            用更少的物品整理出更舒服的節奏。
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#products">查看商品</a>
+            <a class="secondary-link" href="#story">了解選品</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="商品篩選工具">
+        <label class="search-box">
+          <i data-lucide="search"></i>
+          <input id="searchInput" type="search" placeholder="搜尋商品、材質或用途" autocomplete="off" />
+        </label>
+        <div class="category-tabs" role="tablist" aria-label="商品分類">
+          <button class="tab is-active" type="button" data-category="全部">全部</button>
+          <button class="tab" type="button" data-category="生活">生活</button>
+          <button class="tab" type="button" data-category="通勤">通勤</button>
+          <button class="tab" type="button" data-category="桌面">桌面</button>
+        </div>
+      </section>
+
+      <section class="content-grid" id="products">
+        <div>
+          <div class="section-heading">
+            <p class="eyebrow">Curated products</p>
+            <h2>本週精選</h2>
+          </div>
+          <div class="product-grid" data-product-grid></div>
+        </div>
+
+        <aside class="cart-panel" id="checkout" aria-label="購物車與結帳">
+          <div class="cart-header">
+            <div>
+              <p class="eyebrow">Checkout</p>
+              <h2>購物車</h2>
+            </div>
+            <button class="icon-button cart-clear" type="button" aria-label="清空購物車">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+          <div class="cart-items" data-cart-items></div>
+          <div class="cart-empty" data-cart-empty>
+            <i data-lucide="shopping-cart"></i>
+            <p>購物車目前是空的。</p>
+          </div>
+          <dl class="totals">
+            <div>
+              <dt>小計</dt>
+              <dd data-subtotal>NT$0</dd>
+            </div>
+            <div>
+              <dt>運費</dt>
+              <dd data-shipping>NT$0</dd>
+            </div>
+            <div class="grand-total">
+              <dt>總計</dt>
+              <dd data-total>NT$0</dd>
+            </div>
+          </dl>
+          <button class="checkout-button" type="button">
+            <i data-lucide="credit-card"></i>
+            前往結帳
+          </button>
+        </aside>
+      </section>
+
+      <section class="story" id="story">
+        <div>
+          <p class="eyebrow">Selection notes</p>
+          <h2>把日本的美好，送到你手中</h2>
+        </div>
+        <p>
+          每件商品都以實用情境出發，重視觸感、收納、維修與材質來源。網站第一版已經能支援商品瀏覽、
+          搜尋篩選與購物車操作，之後可以接上金流、會員系統和後台管理。
+        </p>
+      </section>
+    </main>
+    <style>
+        :root {
+  color-scheme: light;
+  --ink: #1f2428;
+  --muted: #667078;
+  --line: #dde3e8;
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --accent: #146c5f;
+  --accent-strong: #0e5249;
+  --rose: #b34f63;
+  --gold: #b9852f;
+  --shadow: 0 18px 42px rgba(31, 36, 40, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 72px;
+  padding: 14px clamp(18px, 4vw, 56px);
+  border-bottom: 1px solid rgba(221, 227, 232, 0.86);
+  background: rgba(251, 250, 247, 0.92);
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.brand-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(14px, 3vw, 30px);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+.icon-button {
+  position: relative;
+  display: inline-grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.icon-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  min-width: 20px;
+  height: 20px;
+  place-items: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--rose);
+  color: #fff;
+  font-size: 0.73rem;
+  font-weight: 800;
+}
+
+.hero {
+  min-height: min(680px, calc(100vh - 72px));
+  display: flex;
+  align-items: end;
+  padding: clamp(42px, 7vw, 86px) clamp(18px, 4vw, 56px);
+  background:
+    linear-gradient(90deg, rgba(12, 20, 18, 0.76), rgba(12, 20, 18, 0.34), rgba(12, 20, 18, 0.06)),
+    url("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=82")
+      center 38% / cover;
+  color: #fff;
+}
+
+.hero-copy {
+  width: min(720px, 100%);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero .eyebrow {
+  color: #f4cf8a;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 18px;
+  font-size: clamp(3.6rem, 9vw, 7.8rem);
+  line-height: 0.94;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.55rem, 3vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.hero-copy p:not(.eyebrow) {
+  max-width: 620px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1rem, 2vw, 1.18rem);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.primary-link,
+.secondary-link,
+.checkout-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.primary-link {
+  background: #fff;
+  color: var(--ink);
+}
+
+.secondary-link {
+  border-color: rgba(255, 255, 255, 0.54);
+  color: #fff;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px clamp(18px, 4vw, 56px);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(430px, 100%);
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f7f9f8;
+  color: var(--muted);
+}
+
+.search-box input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tab.is-active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(310px, 380px);
+  gap: clamp(22px, 4vw, 42px);
+  padding: clamp(30px, 5vw, 58px) clamp(18px, 4vw, 56px);
+}
+
+.section-heading {
+  margin-bottom: 22px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.product-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #eef2f0;
+}
+
+.product-body {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.product-meta {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.product-meta h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.price {
+  white-space: nowrap;
+  color: var(--accent-strong);
+  font-weight: 900;
+}
+
+.product-card p {
+  min-height: 48px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cart-panel {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.cart-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.cart-items {
+  display: grid;
+  gap: 12px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-item img {
+  width: 58px;
+  height: 58px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.cart-item h3 {
+  margin: 0 0 3px;
+  font-size: 0.94rem;
+}
+
+.cart-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.qty-controls {
+  display: grid;
+  grid-template-columns: 28px 28px 28px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.qty-controls button {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: #f7f9f8;
+  cursor: pointer;
+}
+
+.qty-controls span {
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.cart-empty {
+  display: grid;
+  min-height: 160px;
+  place-items: center;
+  gap: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.cart-empty svg {
+  width: 34px;
+  height: 34px;
+}
+
+.totals {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.totals dt {
+  color: var(--muted);
+}
+
+.totals dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.grand-total {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 1.15rem;
+}
+
+.checkout-button {
+  width: 100%;
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(280px, 1.2fr);
+  gap: clamp(20px, 5vw, 70px);
+  padding: clamp(40px, 7vw, 80px) clamp(18px, 4vw, 56px);
+  border-top: 1px solid var(--line);
+  background: #edf3f0;
+}
+
+.story p:last-child {
+  margin: 0;
+  color: #465159;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 920px) {
+  .content-grid,
+  .story {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    min-height: 64px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    min-height: 600px;
+    padding-top: 52px;
+  }
+
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .category-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tab {
+    padding: 0 8px;
+  }
+
+  .cart-item {
+    grid-template-columns: 52px 1fr;
+  }
+
+  .qty-controls {
+    grid-column: 2;
+    width: max-content;
+  }
+}
+
+
+
+</style>
+<script>
+    const products = [
+  {
+    id: "linen-tote",
+    name: "亞麻托特包",
+    category: "通勤",
+    price: 1680,
+    description: "輕量防潑水內裡，筆電、外套和水瓶都能安穩收進去。",
+    image:
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=82",
+  },
+  {
+    id: "table-lamp",
+    name: "霧黑桌燈",
+    category: "桌面",
+    price: 2280,
+    description: "三段色溫和無段亮度，適合閱讀、手帳和長時間工作。",
+    image:
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=82",
+  },
+  {
+    id: "ceramic-cup",
+    name: "手感陶杯",
+    category: "生活",
+    price: 620,
+    description: "厚薄適中的杯緣與溫潤釉面，讓每天第一杯咖啡更穩定。",
+    image:
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=900&q=82",
+  },
+  {
+    id: "desk-speaker",
+    name: "胡桃木藍牙喇叭",
+    category: "桌面",
+    price: 3180,
+    description: "小體積也有乾淨中頻，適合放在書桌或床邊。",
+    image:
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=900&q=82",
+  },
+  {
+    id: "daily-sneaker",
+    name: "日常皮革休閒鞋",
+    category: "通勤",
+    price: 2980,
+    description: "柔軟鞋墊與俐落線條，從捷運站走到會議室都舒服。",
+    image:
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=82",
+  },
+  {
+    id: "linen-throw",
+    name: "棉麻薄毯",
+    category: "生活",
+    price: 1480,
+    description: "四季都能使用的透氣織物，沙發、床尾或旅行都適合。",
+    image:
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=82",
+  },
+];
+
+const state = {
+  category: "全部",
+  search: "",
+  cart: new Map(),
+};
+
+const money = new Intl.NumberFormat("zh-TW", {
+  style: "currency",
+  currency: "TWD",
+  maximumFractionDigits: 0,
+});
+
+const grid = document.querySelector("[data-product-grid]");
+const tabs = document.querySelectorAll("[data-category]");
+const searchInput = document.querySelector("#searchInput");
+const cartItems = document.querySelector("[data-cart-items]");
+const cartEmpty = document.querySelector("[data-cart-empty]");
+const cartCount = document.querySelector("[data-cart-count]");
+const subtotalNode = document.querySelector("[data-subtotal]");
+const shippingNode = document.querySelector("[data-shipping]");
+const totalNode = document.querySelector("[data-total]");
+const clearButton = document.querySelector(".cart-clear");
+const cartToggle = document.querySelector(".cart-toggle");
+
+function renderProducts() {
+  const query = state.search.trim().toLowerCase();
+  const visibleProducts = products.filter((product) => {
+    const categoryMatch = state.category === "全部" || product.category === state.category;
+    const queryMatch = [product.name, product.category, product.description]
+      .join(" ")
+      .toLowerCase()
+      .includes(query);
+    return categoryMatch && queryMatch;
+  });
+
+  grid.innerHTML = visibleProducts
+    .map(
+      (product) => `
+        <article class="product-card">
+          <img class="product-image" src="${product.image}" alt="${product.name}" loading="lazy" />
+          <div class="product-body">
+            <div class="product-meta">
+              <h3>${product.name}</h3>
+              <span class="price">${money.format(product.price)}</span>
+            </div>
+            <p>${product.description}</p>
+            <button class="add-button" type="button" data-add="${product.id}">
+              <i data-lucide="plus"></i>
+              加入購物車
+            </button>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  if (visibleProducts.length === 0) {
+    grid.innerHTML = `<p class="no-results">沒有找到符合條件的商品。</p>`;
+  }
+
+  refreshIcons();
+}
+
+function renderCart() {
+  const cartProducts = [...state.cart.entries()]
+    .map(([id, quantity]) => ({ ...products.find((product) => product.id === id), quantity }))
+    .filter((product) => product.id);
+
+  cartItems.innerHTML = cartProducts
+    .map(
+      (product) => `
+        <div class="cart-item">
+          <img src="${product.image}" alt="${product.name}" />
+          <div>
+            <h3>${product.name}</h3>
+            <p>${money.format(product.price)} / 件</p>
+          </div>
+          <div class="qty-controls" aria-label="${product.name} 數量">
+            <button type="button" data-decrease="${product.id}" aria-label="減少 ${product.name} 數量">-</button>
+            <span>${product.quantity}</span>
+            <button type="button" data-increase="${product.id}" aria-label="增加 ${product.name} 數量">+</button>
+          </div>
+        </div>
+      `
+    )
+    .join("");
+
+  const itemCount = cartProducts.reduce((sum, product) => sum + product.quantity, 0);
+  const subtotal = cartProducts.reduce((sum, product) => sum + product.price * product.quantity, 0);
+  const shipping = subtotal === 0 || subtotal >= 2500 ? 0 : 120;
+
+  cartEmpty.hidden = cartProducts.length > 0;
+  cartCount.textContent = itemCount;
+  subtotalNode.textContent = money.format(subtotal);
+  shippingNode.textContent = money.format(shipping);
+  totalNode.textContent = money.format(subtotal + shipping);
+}
+
+function addToCart(id) {
+  state.cart.set(id, (state.cart.get(id) || 0) + 1);
+  renderCart();
+}
+
+function updateQuantity(id, change) {
+  const nextQuantity = (state.cart.get(id) || 0) + change;
+  if (nextQuantity <= 0) {
+    state.cart.delete(id);
+  } else {
+    state.cart.set(id, nextQuantity);
+  }
+  renderCart();
+}
+
+function refreshIcons() {
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    state.category = tab.dataset.category;
+    tabs.forEach((item) => item.classList.toggle("is-active", item === tab));
+    renderProducts();
+  });
+});
+
+searchInput.addEventListener("input", (event) => {
+  state.search = event.target.value;
+  renderProducts();
+});
+
+grid.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-add]");
+  if (button) addToCart(button.dataset.add);
+});
+
+cartItems.addEventListener("click", (event) => {
+  const increase = event.target.closest("[data-increase]");
+  const decrease = event.target.closest("[data-decrease]");
+  if (increase) updateQuantity(increase.dataset.increase, 1);
+  if (decrease) updateQuantity(decrease.dataset.decrease, -1);
+});
+
+clearButton.addEventListener("click", () => {
+  state.cart.clear();
+  renderCart();
+});
+
+cartToggle.addEventListener("click", () => {
+  document.querySelector("#checkout").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+window.addEventListener("load", refreshIcons);
+
+renderProducts();
+renderCart();
+</script>
+  </body>
+  
+</html>
